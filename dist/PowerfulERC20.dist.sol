@@ -1572,21 +1572,21 @@ contract PowerfulERC20 is ERC20Capped, ERC20Mintable, ERC20Burnable, ERC1363, To
      * @param to The address that will receive the minted tokens
      * @param value The amount of tokens to mint
      */
-    function mint(address to, uint256 value) public virtual override onlyOwner {
+    function mint(address to, uint256 value) public override onlyOwner {
         super.mint(to, value);
     }
 
     /**
      * @dev Function to stop minting new tokens.
      */
-    function finishMinting() public virtual override onlyOwner {
+    function finishMinting() public override onlyOwner {
         super.finishMinting();
     }
 
     /**
      * @dev See {ERC20-_beforeTokenTransfer}.
      */
-    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override(ERC20, ERC20Capped) {
+    function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Capped) {
         super._beforeTokenTransfer(from, to, amount);
     }
 }
