@@ -3,32 +3,17 @@
 pragma solidity ^0.7.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Capped.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 
+import "./behaviours/ERC20Mintable.sol";
 import "../../service/ServicePayer.sol";
 
 /**
  * @title CommonERC20
  * @dev Implementation of the CommonERC20
  */
-contract CommonERC20 is ERC20Capped, ERC20Burnable, Ownable, ServicePayer {
-
-    // indicates if minting is finished
-    bool private _mintingFinished = false;
-
-    /**
-     * @dev Emitted during finish minting
-     */
-    event MintFinished();
-
-    /**
-     * @dev Tokens can be minted only before minting finished.
-     */
-    modifier canMint() {
-        require(!_mintingFinished, "CommonERC20: minting is finished");
-        _;
-    }
+contract CommonERC20 is Ownable, ERC20Capped, ERC20Mintable, ERC20Burnable, ServicePayer {
 
     constructor (
         string memory name,
@@ -44,28 +29,19 @@ contract CommonERC20 is ERC20Capped, ERC20Burnable, Ownable, ServicePayer {
     }
 
     /**
-     * @return if minting is finished or not.
-     */
-    function mintingFinished() public view returns (bool) {
-        return _mintingFinished;
-    }
-
-    /**
      * @dev Function to mint tokens.
      * @param to The address that will receive the minted tokens
      * @param value The amount of tokens to mint
      */
-    function mint(address to, uint256 value) public canMint onlyOwner {
-        _mint(to, value);
+    function mint(address to, uint256 value) public virtual override onlyOwner {
+        super.mint(to, value);
     }
 
     /**
      * @dev Function to stop minting new tokens.
      */
-    function finishMinting() public canMint onlyOwner {
-        _mintingFinished = true;
-
-        emit MintFinished();
+    function finishMinting() public virtual override onlyOwner {
+        super.finishMinting();
     }
 
     /**

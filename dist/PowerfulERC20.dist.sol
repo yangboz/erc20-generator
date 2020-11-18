@@ -1423,6 +1423,61 @@ contract TokenRecover is Ownable {
     }
 }
 
+// File: contracts/token/ERC20/behaviours/ERC20Mintable.sol
+
+
+
+pragma solidity ^0.7.0;
+
+
+/**
+ * @title ERC20Mintable
+ * @dev Implementation of the ERC20Mintable. Extension of {ERC20} that adds a minting behaviour.
+ */
+abstract contract ERC20Mintable is ERC20 {
+
+    // indicates if minting is finished
+    bool private _mintingFinished = false;
+
+    /**
+     * @dev Emitted during finish minting
+     */
+    event MintFinished();
+
+    /**
+     * @dev Tokens can be minted only before minting finished.
+     */
+    modifier canMint() {
+        require(!_mintingFinished, "ERC20Mintable: minting is finished");
+        _;
+    }
+
+    /**
+     * @return if minting is finished or not.
+     */
+    function mintingFinished() public view returns (bool) {
+        return _mintingFinished;
+    }
+
+    /**
+     * @dev Function to mint tokens.
+     * @param to The address that will receive the minted tokens
+     * @param value The amount of tokens to mint
+     */
+    function mint(address to, uint256 value) public virtual canMint {
+        _mint(to, value);
+    }
+
+    /**
+     * @dev Function to stop minting new tokens.
+     */
+    function finishMinting() public virtual canMint {
+        _mintingFinished = true;
+
+        emit MintFinished();
+    }
+}
+
 // File: contracts/service/ServiceReceiver.sol
 
 
@@ -1492,27 +1547,12 @@ pragma solidity ^0.7.0;
 
 
 
+
 /**
  * @title PowerfulERC20
  * @dev Implementation of the PowerfulERC20
  */
-contract PowerfulERC20 is ERC20Capped, ERC20Burnable, ERC1363, TokenRecover, ServicePayer {
-
-    // indicates if minting is finished
-    bool private _mintingFinished = false;
-
-    /**
-     * @dev Emitted during finish minting
-     */
-    event MintFinished();
-
-    /**
-     * @dev Tokens can be minted only before minting finished.
-     */
-    modifier canMint() {
-        require(!_mintingFinished, "PowerfulERC20: minting is finished");
-        _;
-    }
+contract PowerfulERC20 is ERC20Capped, ERC20Mintable, ERC20Burnable, ERC1363, TokenRecover, ServicePayer {
 
     constructor (
         string memory name,
@@ -1528,28 +1568,19 @@ contract PowerfulERC20 is ERC20Capped, ERC20Burnable, ERC1363, TokenRecover, Ser
     }
 
     /**
-     * @return if minting is finished or not.
-     */
-    function mintingFinished() public view returns (bool) {
-        return _mintingFinished;
-    }
-
-    /**
      * @dev Function to mint tokens.
      * @param to The address that will receive the minted tokens
      * @param value The amount of tokens to mint
      */
-    function mint(address to, uint256 value) public canMint onlyOwner {
-        _mint(to, value);
+    function mint(address to, uint256 value) public virtual override onlyOwner {
+        super.mint(to, value);
     }
 
     /**
      * @dev Function to stop minting new tokens.
      */
-    function finishMinting() public canMint onlyOwner {
-        _mintingFinished = true;
-
-        emit MintFinished();
+    function finishMinting() public virtual override onlyOwner {
+        super.finishMinting();
     }
 
     /**

@@ -1,5 +1,4 @@
-const { BN, constants, ether, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
-const { ZERO_ADDRESS } = constants;
+const { BN, ether, expectRevert } = require('@openzeppelin/test-helpers');
 
 const { shouldBehaveLikeOwnable } = require('eth-token-recover/test/access/Ownable.behavior');
 
@@ -140,74 +139,15 @@ contract('CommonERC20', function ([owner, other, thirdParty]) {
     });
 
     context('like a CommonERC20', function () {
-      describe('mint', function () {
-        const amount = new BN(100);
+      describe('when the sender doesn\'t have minting permission', function () {
+        const from = thirdParty;
 
-        context('when the sender has minting permission', function () {
-          const from = owner;
+        it('cannot mint', async function () {
+          const amount = new BN(50);
 
-          context('for a zero amount', function () {
-            shouldMint(new BN(0));
-          });
-
-          context('for a non-zero amount', function () {
-            shouldMint(amount);
-          });
-
-          function shouldMint (amount) {
-            beforeEach(async function () {
-              ({ logs: this.logs } = await this.token.mint(other, amount, { from }));
-            });
-
-            it('mints the requested amount', async function () {
-              (await this.token.balanceOf(other)).should.be.bignumber.equal(amount);
-            });
-
-            it('emits a transfer event', async function () {
-              expectEvent.inLogs(this.logs, 'Transfer', {
-                from: ZERO_ADDRESS,
-                to: other,
-                value: amount,
-              });
-            });
-          }
-        });
-
-        context('when the sender doesn\'t have minting permission', function () {
-          const from = other;
-
-          it('reverts', async function () {
-            await expectRevert(
-              this.token.mint(other, amount, { from }),
-              'Ownable: caller is not the owner',
-            );
-          });
-        });
-      });
-
-      context('before finish minting', function () {
-        it('mintingFinished should be false', async function () {
-          (await this.token.mintingFinished()).should.be.equal(false);
-        });
-      });
-
-      context('after finish minting', function () {
-        beforeEach(async function () {
-          ({ logs: this.logs } = await this.token.finishMinting({ from: owner }));
-        });
-
-        it('should emit MintFinished', async function () {
-          expectEvent.inLogs(this.logs, 'MintFinished');
-        });
-
-        it('mintingFinished should be true', async function () {
-          (await this.token.mintingFinished()).should.be.equal(true);
-        });
-
-        it('shouldn\'t mint more tokens', async function () {
           await expectRevert(
-            this.token.mint(thirdParty, 1, { from: owner }),
-            'CommonERC20: minting is finished',
+            this.token.mint(thirdParty, amount, { from }),
+            'Ownable: caller is not the owner',
           );
         });
       });
