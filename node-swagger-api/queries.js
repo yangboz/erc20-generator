@@ -6,17 +6,17 @@ var options = {
 };
 
 var pgp = require('pg-promise')(options);
-var connectionString = 'postgres://localhost:5432/puppies';
+var connectionString = 'postgres://localhost:5432/abctokens';
 var db = pgp(connectionString);
 
-function getAllPuppies(req, res, next) {
-  db.any('select * from pups')
+function getAllTokenTypes(req, res, next) {
+  db.any('select * from tokenTypes')
     .then(function (data) {
       res.status(200)
         .json({
           status: 'success',
           data: data,
-          message: 'Retrieved ALL puppies'
+          message: 'Retrieved ALL tokenTypes'
         });
     })
     .catch(function (err) {
@@ -24,15 +24,15 @@ function getAllPuppies(req, res, next) {
     });
 }
 
-function getSinglePuppy(req, res, next) {
+function getSingleTokenType(req, res, next) {
   var pupID = parseInt(req.params.id);
-  db.one('select * from pups where id = $1', pupID)
+  db.one('select * from tokenTypes where id = $1', pupID)
     .then(function (data) {
       res.status(200)
         .json({
           status: 'success',
           data: data,
-          message: 'Retrieved ONE puppy'
+          message: 'Retrieved ONE tokenType'
         });
     })
     .catch(function (err) {
@@ -92,8 +92,8 @@ function removePuppy(req, res, next) {
 
 
 module.exports = {
-  getAllPuppies: getAllPuppies,
-  getSinglePuppy: getSinglePuppy,
+  getAllTokenTypes: getAllTokenTypes,
+  getSinglePuppy: getSingleTokenType,
   createPuppy: createPuppy,
   updatePuppy: updatePuppy,
   removePuppy: removePuppy
