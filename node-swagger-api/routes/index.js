@@ -20,20 +20,20 @@ var db = require('../queries');
 
 /**
  * @swagger
- * /api/tokenTypes:
+ * /api/puppies:
  *   get:
  *     tags:
- *       - tokenTypes
- *     description: Returns all tokenTypes
+ *       - Puppies
+ *     description: Returns all puppies
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: An array of tokenTypes
+ *         description: An array of puppies
  *         schema:
- *           $ref: '#/definitions/tokenType'
+ *           $ref: '#/definitions/Puppy'
  */
-router.get('/api/tokenTypes', db.getAlltokenTypes);
+router.get('/api/puppies', db.getAllPuppies);
 
 /**
  * @swagger
@@ -56,14 +56,14 @@ router.get('/api/tokenTypes', db.getAlltokenTypes);
  *         schema:
  *           $ref: '#/definitions/Puppy'
  */
-router.get('/api/tokenTypes/:id', db.getSinglePuppy);
+router.get('/api/puppies/:id', db.getSinglePuppy);
 
 /**
  * @swagger
- * /api/tokenTypes:
+ * /api/puppies:
  *   post:
  *     tags:
- *       - tokenTypes
+ *       - Puppies
  *     description: Creates a new puppy
  *     produces:
  *       - application/json
@@ -78,7 +78,7 @@ router.get('/api/tokenTypes/:id', db.getSinglePuppy);
  *       200:
  *         description: Successfully created
  */
-router.post('/api/tokenTypes', db.createPuppy);
+router.post('/api/puppies', db.createPuppy);
 
 /**
  * @swagger
@@ -105,7 +105,7 @@ router.post('/api/tokenTypes', db.createPuppy);
  *       200:
  *         description: Successfully updated
  */
-router.put('/api/tokenTypes/:id', db.updatePuppy);
+router.put('/api/puppies/:id', db.updatePuppy);
 
 /**
  * @swagger
@@ -126,7 +126,7 @@ router.put('/api/tokenTypes/:id', db.updatePuppy);
  *       200:
  *         description: Successfully deleted
  */
-router.delete('/api/tokenTypes/:id', db.removePuppy);
+router.delete('/api/puppies/:id', db.removePuppy);
 
 
 module.exports = router;
