@@ -1,0 +1,207 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "Swagger CRUD",
+		"description": "Swagger CRUD description",
+		"termsOfService": "http://swagger.io/terms/"
+	},
+	"basePath": "/",
+	"tags": [
+		{
+			"name": "tokenTypes",
+			"description": "tokenType actions"
+		}
+	],
+	"schemes": ["http", "https"],
+	"consumes": ["application/json"],
+	"produces": ["application/json"],
+	"paths": {
+		"/api/v1/tokenTypes": {
+			"post": {
+				"tags": ["tokenTypes"],
+				"description": "Create tokenType",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "vm",
+						"required": ["profile_id", "name", "desc"],
+						"in": "body",
+						"properties": {
+							"profile_id": {
+								"$ref": "#/definitions/profile_id"
+							},
+							"tokenTypename": {
+								"$ref": "#/definitions/tokenTypename"
+							},
+							"desc": {
+								"$ref": "#/definitions/desc"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Business Exception",
+						"schema": {
+							"$ref": "#/definitions/business_exception"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["tokenTypes"],
+				"description": "Update tokenType",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "vm",
+						"required": ["_id", "profile_id", "tokenTypename", "desc"],
+						"in": "body",
+						"properties": {
+							"_id": {
+								"$ref": "#/definitions/_id"
+							},
+							"profile_id": {
+								"$ref": "#/definitions/profile_id"
+							},
+							"tokenTypename": {
+								"$ref": "#/definitions/tokenTypename"
+							},
+							"desc": {
+								"$ref": "#/definitions/desc"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Business Exception",
+						"schema": {
+							"$ref": "#/definitions/business_exception"
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": ["tokenTypes"],
+				"description": "List tokenTypes",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "_id",
+						"in": "query",
+						"type": "string",
+						"description": "Collection ID",
+						"example": "5c0728badc70ea3dec00d8e6",
+						"defaultValue": ""
+					},
+					{
+						"name": "profile_id",
+						"in": "query",
+						"type": "number",
+						"description": "Profile ID (1 = ADMIN, 2 = CLIENT)",
+						"example": 1
+					},
+					{
+						"name": "tokenTypename",
+						"in": "query",
+						"type": "string",
+						"description": "tokenType logon",
+						"example": "LUCIANO"
+					},
+					{
+						"name": "desc",
+						"in": "query",
+						"type": "string",
+						"description": "tokenType desc",
+						"example": "1234"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Business Exception",
+						"schema": {
+							"$ref": "#/definitions/business_exception"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["tokenTypes"],
+				"description": "Delete tokenType",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "_id",
+						"in": "query",
+						"required": true,
+						"type": "string",
+						"description": "Collection ID",
+						"example": "5c0728badc70ea3dec00d8e6"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					},
+					"400": {
+						"description": "Business Exception",
+						"schema": {
+							"$ref": "#/definitions/business_exception"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"_id": {
+			"type": "string",
+			"description": "Collection ID",
+			"example": "5c0728badc70ea3dec00d8e6"
+		},
+		"profile_id": {
+			"type": "number",
+			"description": "Profile ID (1 = ADMIN, 2 = CLIENT)",
+			"example": 1
+		},
+		"tokenTypename": {
+			"type": "string",
+			"description": "tokenType logon",
+			"example": "LUCIANO"
+		},
+		"desc": {
+			"type": "string",
+			"description": "tokenType desc",
+			"example": "1234"
+		},
+		"error": {
+			"type": "object",
+			"description": "Error data",
+			"properties": {
+				"msg": {
+					"type": "string",
+					"description": "Error message",
+					"example": "tokenType not found"
+				}
+			}
+		},
+		"business_exception": {
+			"type": "array",
+			"description": "Error array",
+			"items": {
+				"$ref": "#/definitions/error"
+			}
+		}
+	}
+}

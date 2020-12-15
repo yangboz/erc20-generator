@@ -6,6 +6,7 @@ var cors = require('cors');
 
 // CONTROLLERS
 var usersCtrl = require('./controllers/users');
+var tokenTypesCtrl = require('./controllers/tokenTypes');
 
 //CORS
 app.use(
@@ -69,6 +70,7 @@ MongoClient.connect(uri, (err, client) => {
 	if (err) return console.log(err);
 	db = client.db('crud');
 
+	app.use('/api/v1/tokenTypes', tokenTypesCtrl);
 	app.use('/api/v1/users', usersCtrl);
 
 	app.listen(3000, function() {

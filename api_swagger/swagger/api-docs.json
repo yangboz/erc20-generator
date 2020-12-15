@@ -9,33 +9,33 @@
 	"basePath": "/",
 	"tags": [
 		{
-			"name": "Users",
-			"description": "User actions"
+			"name": "tokenTypes",
+			"description": "tokenType actions"
 		}
 	],
 	"schemes": ["http", "https"],
 	"consumes": ["application/json"],
 	"produces": ["application/json"],
 	"paths": {
-		"/api/v1/users": {
+		"/api/v1/tokenTypes": {
 			"post": {
-				"tags": ["Users"],
-				"description": "Create user",
+				"tags": ["tokenTypes"],
+				"description": "Create tokenType",
 				"produces": ["application/json"],
 				"parameters": [
 					{
 						"name": "vm",
-						"required": ["profile_id", "username", "password"],
+						"required": ["profile_id", "name", "desc"],
 						"in": "body",
 						"properties": {
 							"profile_id": {
 								"$ref": "#/definitions/profile_id"
 							},
-							"username": {
-								"$ref": "#/definitions/username"
+							"tokenTypename": {
+								"$ref": "#/definitions/tokenTypename"
 							},
-							"password": {
-								"$ref": "#/definitions/password"
+							"desc": {
+								"$ref": "#/definitions/desc"
 							}
 						}
 					}
@@ -53,13 +53,13 @@
 				}
 			},
 			"put": {
-				"tags": ["Users"],
-				"description": "Update user",
+				"tags": ["tokenTypes"],
+				"description": "Update tokenType",
 				"produces": ["application/json"],
 				"parameters": [
 					{
 						"name": "vm",
-						"required": ["_id", "profile_id", "username", "password"],
+						"required": ["_id", "profile_id", "tokenTypename", "desc"],
 						"in": "body",
 						"properties": {
 							"_id": {
@@ -68,11 +68,11 @@
 							"profile_id": {
 								"$ref": "#/definitions/profile_id"
 							},
-							"username": {
-								"$ref": "#/definitions/username"
+							"tokenTypename": {
+								"$ref": "#/definitions/tokenTypename"
 							},
-							"password": {
-								"$ref": "#/definitions/password"
+							"desc": {
+								"$ref": "#/definitions/desc"
 							}
 						}
 					}
@@ -90,8 +90,8 @@
 				}
 			},
 			"get": {
-				"tags": ["Users"],
-				"description": "List users",
+				"tags": ["tokenTypes"],
+				"description": "List tokenTypes",
 				"produces": ["application/json"],
 				"parameters": [
 					{
@@ -110,17 +110,17 @@
 						"example": 1
 					},
 					{
-						"name": "username",
+						"name": "tokenTypename",
 						"in": "query",
 						"type": "string",
-						"description": "User logon",
+						"description": "tokenType logon",
 						"example": "LUCIANO"
 					},
 					{
-						"name": "password",
+						"name": "desc",
 						"in": "query",
 						"type": "string",
-						"description": "User password",
+						"description": "tokenType desc",
 						"example": "1234"
 					}
 				],
@@ -137,8 +137,8 @@
 				}
 			},
 			"delete": {
-				"tags": ["Users"],
-				"description": "Delete user",
+				"tags": ["tokenTypes"],
+				"description": "Delete tokenType",
 				"produces": ["application/json"],
 				"parameters": [
 					{
@@ -175,14 +175,14 @@
 			"description": "Profile ID (1 = ADMIN, 2 = CLIENT)",
 			"example": 1
 		},
-		"username": {
+		"tokenTypename": {
 			"type": "string",
-			"description": "User logon",
+			"description": "tokenType logon",
 			"example": "LUCIANO"
 		},
-		"password": {
+		"desc": {
 			"type": "string",
-			"description": "User password",
+			"description": "tokenType desc",
 			"example": "1234"
 		},
 		"error": {
@@ -192,7 +192,7 @@
 				"msg": {
 					"type": "string",
 					"description": "Error message",
-					"example": "User not found"
+					"example": "tokenType not found"
 				}
 			}
 		},
